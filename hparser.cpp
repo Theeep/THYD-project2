@@ -75,3 +75,21 @@ HParser::variable()
     match( decaf::token_type::Identifier );
     return node;
 }
+
+/*list<MethodNode*>*
+HParser::method_declarations()
+{
+    auto list_m = new list<MethodNode*>();
+    list_m->push_back();
+}*/
+
+ValueType HParser::method_return_type()
+{
+    if(token_.type == decaf::token_type::kwVoid)
+    {
+        match(decaf::token_type::kwVoid);
+        return ValueType::VoidVal;
+    }
+    return type();
+
+}

@@ -121,5 +121,6 @@ private:
     std::list<VariableExprNode*>* variable_list();
     VariableExprNode* variable();
     ValueType type();
+    ValueType method_return_type();
 };
 #endif //DECAFPARSER_HPARSER_H

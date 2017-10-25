@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.8)
 project(DecafParser)
 
+include_directories("${CMAKE_SOURCE_DIR}")
+
 find_package(FLEX)
 FLEX_TARGET(DecafLexer decaf.l ${CMAKE_CURRENT_BINARY_DIR}/../lexer_decaf.cpp)
 
 find_package(BISON)
 BISON_TARGET(DecafParser decaf.yy ${CMAKE_CURRENT_BINARY_DIR}/../parser_decaf.cpp)
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated-register")

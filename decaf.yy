@@ -19,15 +19,13 @@
     class Parser;
 }
 
-%parse-param
+%parse-param{ Parser& driver} 
+%locations
+%code
 {
-    Parser& driver 
-    %locations
-    %code
-    {
-        #include "parser.h"
-    }
+    #include "parser.h"
 }
+
 
 %token EOI 0
 

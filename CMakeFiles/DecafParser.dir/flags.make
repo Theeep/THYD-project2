@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -Wno-deprecated-register   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/ap/code/HR/THYD/THYD-project2 -I/home/ap/code/HR/THYD/THYD-project2/.. 
 
