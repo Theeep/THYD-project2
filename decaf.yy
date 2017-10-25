@@ -14,16 +14,19 @@
 
 %code requires
 {
-#include <string>
-#include "ast.h"
-class Parser;
+    #include <string>
+    #include "ast.h"
+    class Parser;
 }
 
-%parse-param { Parser& driver }
-%locations
-%code
+%parse-param
 {
-#include "parser.h"
+    Parser& driver 
+    %locations
+    %code
+    {
+        #include "parser.h"
+    }
 }
 
 %token EOI 0

@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Wno-deprecated-register   CMakeFiles/DecafParser.dir/home/ap/code/HR/THYD/parser_decaf.cpp.o CMakeFiles/DecafParser.dir/home/ap/code/HR/THYD/lexer_decaf.cpp.o CMakeFiles/DecafParser.dir/main.cpp.o CMakeFiles/DecafParser.dir/hparser.cpp.o  -o DecafParser 
