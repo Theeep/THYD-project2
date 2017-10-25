@@ -58,7 +58,7 @@ list<VariableExprNode*>*
 HParser::variable_list()
 {
     auto list_v = new list<VariableExprNode*>();
-    list_v->push_back( variable() );
+
     while ( token_.type == decaf::token_type::ptComma ) {
         match( decaf::token_type::ptComma );
         list_v->push_back( variable() );
@@ -76,12 +76,13 @@ HParser::variable()
     return node;
 }
 
-/*list<MethodNode*>*
+list<MethodNode*>*
 HParser::method_declarations()
 {
     auto list_m = new list<MethodNode*>();
     list_m->push_back();
-}*/
+    while()
+}
 
 ValueType HParser::method_return_type()
 {
@@ -93,3 +94,73 @@ ValueType HParser::method_return_type()
     return type();
 
 }
+
+MethodNode HParser::method_declaration()
+{
+    match(decaf::token_type::kwStatic);
+    auto mrt = method_return_type();
+    string id = token_.lexeme;
+    match(decaf::token_type::Identifier);
+    match(decaf::token_type::ptLParen);
+    auto pm = parameters();
+    match(decaf::token_type::ptRParen);
+    match(decaf::token_type::ptLBrace);
+    auto vd = variable_declarations();
+    auto sl = statement_list();
+    match(decaf::token_type::ptRBrace);
+    
+}
+
+list<ParameterNode*>* HParser::parameters()
+{
+    auto list_pl = list<ParameterNode*>();
+    if(   token_.type == decaf::token_type::kwInt ||
+          token_.type == decaf::token_type::kwReal)
+          {
+                auto pl = parameter_list();
+                return pl;
+          }
+    return list_pl;
+}
+
+list<ParameterNode*>* HParser::parameter_list()
+{
+    auto list_pl = list<ParameterNode*>();
+    auto tp = type();
+    string id = token_.lexeme;
+    match(decaf::token_type::Identifier)
+    list_pl->push_back(new ParameterNode(tp,id));
+    while(token_.type == decaf::token_type::ptComma)
+    {
+        auto tp = type();
+        string id = token_.lexeme;
+        match(decaf::token_type::Identifier)
+        list_pl->push_back(new ParameterNode(tp,id));
+    }
+    return list_pl;
+}
+list<StmNode*>* statement_list()
+{
+    auto list_stm = list<StmNode*>();
+    while(auto stm = statement())
+    {
+       list_stm->push_back(stm);
+    }
+    return list_stm;
+}
+list<StmNode*>* statement()
+{
+    if(token_.type == decaf::token_type::Identifier)
+    {
+        
+    }
+}
+
+list<StmNode*>* statement_block()
+{
+    match(decaf::token_type::ptLBrace);
+    auto sl = statement_list();
+    match(decaf::token_type::ptRBrace);
+    return sl;
+}
+
