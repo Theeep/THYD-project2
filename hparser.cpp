@@ -247,6 +247,17 @@ list<StmNode*>* statement()
     }
 }
 
+ExprNode* optional_expr()
+{
+    auto ex = expr();
+    if(ex == new ExprNode())
+    {
+        return new ExprNode();
+    }
+    return ex;
+    //TODO: this probably doenst work, fix for epsilon
+}
+
 list<StmNode*>* statement_block()
 {
     match(decaf::token_type::ptLBrace);
@@ -255,3 +266,14 @@ list<StmNode*>* statement_block()
     return sl;
 }
 
+list<StmNode*>* optional_else()
+{
+    if(token_.type == decaf::token_type::kwElse)
+    {
+        match(decaf::token_type::kwElse);
+        auto stmb = statement_block();
+        return stmb;
+    }
+    return new list<StmNode*>();
+    
+}
