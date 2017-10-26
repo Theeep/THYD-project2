@@ -152,7 +152,35 @@ list<StmNode*>* statement()
 {
     if(token_.type == decaf::token_type::Identifier)
     {
+
+    }
+    else if(token_.type == decaf::token_type::kwIf)
+    {
+        match(decaf::token_type::kwIf);
+        match(decaf::token_type::ptLParen);
+        auto ex = expr();
+        match(decaf::token_type::ptRParen);
+        auto stmb = statement_block();
+        auto opelse = optional_else();
+
+        return new IfStmNode(new ExprNode(ex),new BlockStmNode(stmb),new BlockStmNode(opelse));
+    }
+    else if(token_.type == decaf::token_type::kwFor)
+    {
+        match(decaf::token_type::kwFor);
+        match(decaf::token_type::ptLParen);
+        auto var1 = variable();
+        match(decaf::token_type::OpAssign);
+        auto ex1 = expr();
+        match(decaf::token_type::ptSemicolon);
+        auto ex2 = expr();
+        match(decaf::token_type::ptSemicolon);
+        auto var2 = variable();           
+        auto opicdc = op_incr_decr();
+        match(decaf::token_type::ptRParen);
+        auto stmb = statement_block();
         
+        return new ForStmNode(new AssignStmNode(var1,ex1),new ExprNode(ex2),new IncrDecrStmNode(var2,opicdc),new BlockStmNode(stmb));
     }
 }
 
