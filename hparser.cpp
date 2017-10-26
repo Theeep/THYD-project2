@@ -171,7 +171,17 @@ list<StmNode*>* statement()
         }
         else
         {
-            
+            auto var = variable();
+            auto opicdc = op_incr_decr();
+            match(decaf::token_type::ptSemicolon);
+            if(opicdc == decaf::token_type::OpArtInc)
+            {
+                return new IncrStmNode(var);
+            }
+            else
+            {
+                return new DecrStmNode(var);
+            }
         }
 
     }
@@ -201,7 +211,39 @@ list<StmNode*>* statement()
         match(decaf::token_type::ptRParen);
         auto stmb = statement_block();
         
-        return new ForStmNode(new AssignStmNode(var1,ex1),new ExprNode(ex2),new IncrDecrStmNode(var2,opicdc),new BlockStmNode(stmb));
+        if(opicdc == decaf::token_type::OpArtInc)
+        {
+            return new ForStmNode(new AssignStmNode(var1,ex1),new ExprNode(ex2),new IncrStmNode(var2),new BlockStmNode(stmb));
+        }
+        else
+        {
+            return new ForStmNode(new AssignStmNode(var1,ex1),new ExprNode(ex2),new DecrStmNode(var2),new BlockStmNode(stmb));
+        }
+    }
+    else if(token_.type == decaf::token_type::kwReturn)
+    {
+        match(decaf::token_type::kwReturn);
+        auto opex = optional_expr();
+        match(decaf::token_type::ptSemicolon);
+        return new ReturnStmNode(opex);
+    }
+    else if(token_.type == decaf::token_type::kwBreak)
+    {
+        match(decaf::token_type::kwBreak);
+        match(decaf::token_type::ptSemicolon);
+        return new BreakStmNode();
+    }
+    else if(token_.type == decaf::token_type::kwContinue)
+    {
+        match(decaf::token_type::kwContinue);
+        match(decaf::token_type::ptSemicolon);
+        return new ContinueStmNode();
+
+    }
+    else
+    {
+        auto stmb = statement_block();
+        return new StmNode(stmb);
     }
 }
 
