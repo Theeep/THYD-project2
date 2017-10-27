@@ -5,10 +5,15 @@
 #include <list>
 #include "parser.h"
 
-#define OUTPUT_TT(tt) case decaf::token_type::tt: os << #tt; break;
+#define OUTPUT_TT(tt)           \
+    case decaf::token_type::tt: \
+        os << #tt;              \
+        break;
 
-inline std::ostream& operator<<(std::ostream& os, decaf::token_type type) {
-    switch ( type ) {
+inline std::ostream &operator<<(std::ostream &os, decaf::token_type type)
+{
+    switch (type)
+    {
         OUTPUT_TT(Identifier)
         OUTPUT_TT(Number)
         OUTPUT_TT(OpRelEQ)
@@ -51,76 +56,90 @@ inline std::ostream& operator<<(std::ostream& os, decaf::token_type type) {
     return os;
 }
 
-class HParser : public Parser {
-private:
-
-    struct Token {
-        yy::parser_decaf::token_type type;   // Type of the token.
-        std::string lexeme;                  // Matched lexeme.
-        int line;                            // Line number in file where token is.
-        int col;                             // Column number in file where token is.
+class HParser : public Parser
+{
+  private:
+    struct Token
+    {
+        yy::parser_decaf::token_type type; // Type of the token.
+        std::string lexeme;                // Matched lexeme.
+        int line;                          // Line number in file where token is.
+        int col;                           // Column number in file where token is.
     };
 
     Token token_;
 
-    static void get_next( Token& token )
+    static void get_next(Token &token)
     {
-       yy::parser_decaf::symbol_type st( yylex() );
+        yy::parser_decaf::symbol_type st(yylex());
         token.type = st.token();
         if (token.type == yy::parser_decaf::token_type::Identifier ||
             token.type == yy::parser_decaf::token_type::Number ||
-            token.type == yy::parser_decaf::token_type::ErrUnknown ) {
+            token.type == yy::parser_decaf::token_type::ErrUnknown)
+        {
             token.lexeme = st.value.as<std::string>();
         }
-        else {
+        else
+        {
             token.lexeme.clear();
         }
         token.line = st.location.begin.line;
         token.col = st.location.begin.column;
     }
 
-    void error( decaf::token_type type_expected )
+    void error(decaf::token_type type_expected)
     {
         std::cout << "Syntax error (line "
                   << token_.line << ", col " << token_.col << "): expected token "
                   << type_expected << ", but got token "
-                  << token_.type <<  " (" << token_.lexeme << ")." << std::endl;
+                  << token_.type << " (" << token_.lexeme << ")." << std::endl;
         exit(-1);
     }
 
-    void match( decaf::token_type type )
+    void match(decaf::token_type type)
     {
-        if ( token_.type == type ) {
-            get_next( token_ );
+        if (token_.type == type)
+        {
+            get_next(token_);
         }
-        else { error( type ); }
+        else
+        {
+            error(type);
+        }
     }
 
-public:
-
-    HParser( FILE* file, bool debug_lexer, bool debug_parser )
-            : Parser(file, debug_lexer, debug_parser)
+  public:
+    HParser(FILE *file, bool debug_lexer, bool debug_parser)
+        : Parser(file, debug_lexer, debug_parser)
     {
-        extern FILE* yyin;
+        extern FILE *yyin;
         extern bool yy_flex_debug;
         yyin = file_;
         yy_flex_debug = debug_lexer_;
 
-        get_next( token_ );
+        get_next(token_);
     }
 
     virtual int parse() override;
 
     virtual std::string get_name() const override { return "Handmade"; }
 
-private:
-
+  private:
     // Add your private functions and variables here below ...
-    ProgramNode* program();
-    std::list<VariableDeclarationNode*>* variable_declarations();
-    std::list<VariableExprNode*>* variable_list();
-    VariableExprNode* variable();
+    ProgramNode *program();
+    std::list<VariableDeclarationNode *> *variable_declarations();
     ValueType type();
+    std::list<VariableExprNode *> *variable_list();
+    VariableExprNode *variable();
+    std::list<MethodNode *> *method_declarations();
+    MethodNode method_declaration();
     ValueType method_return_type();
+    std::list<ParameterNode *> *parameters();
+    std::list<ParameterNode *> *parameter_list();
+    std::list<StmNode *> *statement_list();
+    StmNode *statement();
+    ExprNode *optional_expr();
+    std::list<StmNode *> *statement_block();
+    std::list<StmNode *> *optional_else();
 };
 #endif //DECAFPARSER_HPARSER_H
