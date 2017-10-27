@@ -141,5 +141,19 @@ class HParser : public Parser
     ExprNode *optional_expr();
     std::list<StmNode *> *statement_block();
     std::list<StmNode *> *optional_else();
+    ExprNode *expr();
+    ExprNode *expr_p();
+    ExprNode *expr_and();
+    ExprNode *expr_and_p();
+    ExprNode *expr_eq();
+    ExprNode *expr_eq_p();
+    ExprNode *expr_rel();
+    ExprNode *expr_rel_p();
+    ExprNode *expr_add();
+    ExprNode *expr_add_p();
+    ExprNode *expr_mult();
+    ExprNode *expr_mult_p();
+    ExprNode *expr_unary();
+    ExprNode *factor();
 };
 #endif //DECAFPARSER_HPARSER_H
