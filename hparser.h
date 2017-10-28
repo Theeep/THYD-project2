@@ -132,12 +132,13 @@ class HParser : public Parser
     std::list<VariableExprNode *> *variable_list();
     VariableExprNode *variable();
     std::list<MethodNode *> *method_declarations();
-    MethodNode method_declaration();
+    MethodNode *method_declaration();
     ValueType method_return_type();
     std::list<ParameterNode *> *parameters();
     std::list<ParameterNode *> *parameter_list();
     std::list<StmNode *> *statement_list();
     StmNode *statement();
+    StmNode *id_start_stm();
     ExprNode *optional_expr();
     std::list<StmNode *> *statement_block();
     std::list<StmNode *> *optional_else();
