@@ -90,7 +90,7 @@
 %type <std::list<StmNode*>*> statement_list
 %type <StmNode*> statement
 %type <ExprNode*> optional_expression
-%type <std::list<StmNode*>*> statement_block
+%type <BlockStmNode*> statement_block
 %type <IncrDecrStmNode*> incr_decr_var
 %type <BlockStmNode*> optional_else
 %type <std::list<ExprNode*>*> expression_list
@@ -206,12 +206,12 @@ parameter_list:
     type Identifier
     {
         $$ = new std::list<ParameterNode*>();
-        $$->push_back(new ParameterNode($1, new VariableExprNode($2));
+        $$->push_back(new ParameterNode($1, new VariableExprNode($2)));
     }
     | parameter_list ptComma type Identifier
     {
         $$ = $1;
-        $$->push_back(new ParameterNode($3, new VariableExprNode($4));
+        $$->push_back(new ParameterNode($3, new VariableExprNode($4)));
     }
 
 statement_list:
@@ -285,7 +285,7 @@ statement_block:
 
     ptRBrace statement_list ptLBrace
     {
-        $$ = $2;
+        $$ = new BlockStmNode($2);
     }
 
 incr_decr_var:
@@ -303,7 +303,7 @@ optional_else:
 
     kwElse statement_block
     {
-        $$ = new BlockStmNode($2);
+        $$ = $2;
     }
     |
     {
@@ -346,7 +346,7 @@ expression:
     }
     | expression OpRelEQ expression
     {
-        $$ = new EqExprNode($1, $2);
+        $$ = new EqExprNode($1, $3);
     }
     | expression OpRelNEQ expression
     {
@@ -388,11 +388,11 @@ expression:
     {
         $$ = new ModulusExprNode($1, $3);
     }
-    | OpArtPlus expression %PREC OpLogNot
+    | OpArtPlus expression %prec OpLogNot
     {
         $$ = new PlusExprNode($2);
     }
-    | OpArtMinus expression %PREC OpLogNot
+    | OpArtMinus expression %prec OpLogNot
     {
         $$ = new MinusExprNode($2);
     }
@@ -410,7 +410,7 @@ expression:
     }
     | Number
     {
-        $$ = $1;
+        $$ = new NumberExprNode($1);
     }
     | ptLParen expression ptRParen
     {
