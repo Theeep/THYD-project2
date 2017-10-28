@@ -260,7 +260,7 @@ StmNode *HParser::id_start_stm()
     else if (token_.type == decaf::token_type::ptLParen)
     {
         match(decaf::token_type::ptLParen);
-        list<ExprNode *> *list_expr = nullptr;
+        auto list_expr = new list<ExprNode *>();
         if (token_.type == decaf::token_type::ptRParen)
         {
             match(decaf::token_type::ptRParen);
