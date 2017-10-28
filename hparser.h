@@ -140,8 +140,10 @@ class HParser : public Parser
     StmNode *statement();
     StmNode *id_start_stm();
     ExprNode *optional_expr();
-    std::list<StmNode *> *statement_block();
-    std::list<StmNode *> *optional_else();
+    BlockStmNode *statement_block();
+    BlockStmNode *optional_else();
+    std::list<ExprNode *> *expr_list();
+    ExprNode *more_expr();
     ExprNode *expr();
     ExprNode *expr_p(ExprNode *lhs);
     ExprNode *expr_and();

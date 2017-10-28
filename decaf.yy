@@ -283,7 +283,7 @@ optional_expression:
 
 statement_block:
 
-    ptRBrace statement_list ptLBrace
+    ptLBrace statement_list ptRBrace
     {
         $$ = new BlockStmNode($2);
     }
@@ -315,7 +315,7 @@ expression_list:
     expression more_expressions
     {
         $$ = $2;
-        $$->push_back($1);
+        $$->push_front($1);
     }
     |
     {
@@ -327,7 +327,7 @@ more_expressions:
     ptComma expression more_expressions
     {
         $$ = $3;
-        $$->push_back($2);
+        $$->push_front($2);
     }
     |
     {

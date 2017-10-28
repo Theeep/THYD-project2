@@ -15,3 +15,7 @@ fi
 if [ -f "Makefile" ]; then
 	rm Makefile
 fi
+
+if [ -f "DecafParser" ]; then
+	rm DecafParser
+fi
